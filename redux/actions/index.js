@@ -8,6 +8,7 @@ export function fetchUser() {
       .get()
       .then((snapshot) => {
         if (snapshot.exists) {
+          console.log(snapshot.data())
           disptach({
             type: USER_STATE_CHANGE,
             currentUser: snapshot.data()
