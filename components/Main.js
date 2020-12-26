@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchUser } from '../redux/actions/index'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import FeedScreen from './main/Feed'
 
 export class Main extends Component {
   constructor(props) {
@@ -22,9 +24,9 @@ export class Main extends Component {
       )
     }
     return(
-      <View style={{ flex: 1, justifyContent: 'center'}}>
-        <Text>{currentUser.name} User logged in ...</Text>
-      </View>
+      <Tab.Navigator>
+        <Tab.Screen name="Feed" component={FeedScreen} />
+      </Tab.Navigator>
     )
   }
 }
