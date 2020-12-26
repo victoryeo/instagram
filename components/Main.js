@@ -3,12 +3,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchUser } from '../redux/actions/index'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import FeedScreen from './main/Feed'
 import ProfileScreen from './main/Profile'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const Tab = createBottomTabNavigator()
+const Tab = createMaterialBottomTabNavigator()
 
 const EmptyScreen = () => {
   return(
@@ -34,7 +34,7 @@ export class Main extends Component {
       )
     }
     return(
-      <Tab.Navigator initialRouteName="Feed">
+      <Tab.Navigator initialRouteName="Feed" labeled={false}>
         <Tab.Screen name="Feed" component={FeedScreen} options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={26}/>
