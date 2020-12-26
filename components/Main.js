@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { fetchUser } from '../redux/actions/index'
 
-export default class Main extends Component {
+export class Main extends Component {
   constructor(props) {
     super(props)
   }
 
   componentDidMount() {
-
+    this.props.fetchUser()
   }
 
   render() {
@@ -18,3 +21,7 @@ export default class Main extends Component {
     )
   }
 }
+
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser}, dispatch)
+
+export default connect(null, mapDispatchProps)(Main)
