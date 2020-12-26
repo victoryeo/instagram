@@ -37,7 +37,7 @@ export class Main extends Component {
         }} />
         <Tab.Screen name="Add" component={AddScreen} options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="plus-blox" color={color} size={26}/>
+            <MaterialCommunityIcons name="plus-box" color={color} size={26}/>
           )
         }} />
         <Tab.Screen name="Profile" component={ProfileScreen} options={{
