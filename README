@@ -1,1 +1,5 @@
 This is a react native app that mimics instagram app
+
+It is created using the command "expo init instagram". Use "expo start -c" to start debugging. A browser window will pop up after the expo command is executed.
+
+It is tested working on Android devices.
