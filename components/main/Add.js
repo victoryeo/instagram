@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 
 export default function Add() {
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
+  const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function Add() {
     if (camera) {
       const data = await camera.takePictureAsync(null)
       console.log(data.uri) //temp file of the taken picture
+      setImage(data.uri)
     }
   }
 
@@ -58,6 +60,7 @@ export default function Add() {
           takePicture()
         }}>
       </Button>
+      {image && <Image source={{uri: image}} style={{flex:1 }}/>}
     </View>
   );
 }
