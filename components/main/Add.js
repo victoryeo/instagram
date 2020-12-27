@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { Camera } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function Add() {
+  const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
@@ -12,6 +14,14 @@ export default function Add() {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === 'granted');
+
+      if (Platform.OS !== 'web') {
+        const { galleryStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (galleryStatus !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+        setHasGalleryPermission(galleryStatus === 'granted');
+      }
     })();
   }, []);
 
@@ -23,10 +33,25 @@ export default function Add() {
     }
   }
 
-  if (hasPermission === null) {
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  if (hasPermission === null || hasGalleryPermission === null) {
     return <View />;
   }
-  if (hasPermission === false) {
+  if (hasPermission === false || hasGalleryPermission === false) {
     return <Text>No access to camera</Text>;
   }
   return (
@@ -58,6 +83,12 @@ export default function Add() {
         title="Take Picture"
         onPress={() =>{
           takePicture()
+        }}>
+      </Button>
+      <Button
+        title="Pick Image"
+        onPress={() =>{
+          pickImage()
         }}>
       </Button>
       {image && <Image source={{uri: image}} style={{flex:1 }}/>}
