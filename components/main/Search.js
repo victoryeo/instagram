@@ -3,7 +3,7 @@ import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native'
 import firebase from 'firebase'
 require('firebase/firestore')
 
-export default function Search() {
+export default function Search(props) {
   const [users, setUsers] = useState([])
 
   const fetchUser =  (search) => {
@@ -32,7 +32,7 @@ export default function Search() {
         data={users}
         renderItem={({item})=>(
           <TouchableOpacity
-            onPress={() => {}}>
+            onPress={() => props.navigation.navigate("Profile", {uid: item.id})}>
             <Text>{item.name}</Text>
           </TouchableOpacity>
         )}
