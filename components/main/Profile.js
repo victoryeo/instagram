@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 
 function Profile(props) {
   const { currentUser, posts } = props
+  console.log({currentUser})
+  console.log({posts})
   return (
     <View style={styles.containerView}>
       <View style={styles.containerInfo}>
@@ -18,7 +20,7 @@ function Profile(props) {
           renderItem={({item}) => (
             <Image
               style={styles.image}
-              source={{uri:item.downloadURL}}
+              source={{uri: item.snapshot}}
             />
           )}
         />
