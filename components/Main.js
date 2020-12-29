@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { fetchUser, fetchUserPosts } from '../redux/actions/index'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import FeedScreen from './main/Feed'
+import SearchScreen from './main/Search'
 import ProfileScreen from './main/Profile'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -39,6 +40,11 @@ export class Main extends Component {
         <Tab.Screen name="Feed" component={FeedScreen} options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={26}/>
+          )
+        }} />
+        <Tab.Screen name="Search" component={SearchScreen} options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="magnify" color={color} size={26}/>
           )
         }} />
         <Tab.Screen name="AddContainer" component={EmptyScreen}
