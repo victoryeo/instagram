@@ -18,10 +18,12 @@ function Profile(props) {
           horizontal={false}
           data={posts}
           renderItem={({item}) => (
-            <Image
-              style={styles.image}
-              source={{uri: item.snapshot}}
-            />
+            <View style={styles.containerImage}>
+              <Image
+                style={styles.image}
+                source={{uri: item.snapshot}}
+              />
+            </View>
           )}
         />
       </View>
@@ -40,6 +42,9 @@ const styles = StyleSheet.create({
   },
   containerGallery: {
     flex: 2,
+  },
+  containerImage: {
+    flex: 1/3,
   },
   image: {
     flex: 1,
