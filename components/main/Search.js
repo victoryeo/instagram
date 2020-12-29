@@ -24,7 +24,15 @@ export default function Search() {
 
   return (
     <View>
-      <Text>Search</Text>
+      <TextInput onChange={(search) => {fetchUser(search)}} />
+      <FlatList
+        numColumns={1}
+        horizontal={false}
+        data={users}
+        renderItem={(item)=>(
+          <Text>{item.snapshot}</Text>
+        )}
+      />
     </View>
   )
 }
