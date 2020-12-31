@@ -42,7 +42,14 @@ function Profile(props) {
           setUserPosts(posts)
         })
     }
-  }, [props.route.params.uid])
+
+    if (props.following.indexOf(props.route.params.uid) > -1) {
+      //current user is following current profile that she is viewing
+      setFollowing(true)
+    } else {
+      setFollowing(false)
+    }
+  }, [props.route.params.uid, props.following])
 
   const onFollow = () => {
     firebase.firestore()
@@ -59,7 +66,7 @@ function Profile(props) {
       .doc(firebase.auth().currentUser.uid)
       .collection("userFollowing")
       .doc(props.route.params.uid)
-      .delete({})
+      .delete()
   }
 
   if (user === null) {
@@ -132,6 +139,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
   posts: store.userState.posts,
+  following: store.userState.following
 })
 
 export default connect(mapStateToProps, null)(Profile)
