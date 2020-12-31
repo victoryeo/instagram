@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native'
+import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native'
 import { connect } from 'react-redux'
 import firebase from 'firebase'
 require('firebase/firestore')
@@ -7,7 +7,7 @@ require('firebase/firestore')
 function Profile(props) {
   const [userPosts, setUserPosts] = useState([])
   const [user, setUser] = useState(null)
-
+  const [following, setFollowing] = useState(false)
   useEffect(()=> {
     const {currentUser, posts} = props
     console.log({currentUser, posts})
@@ -41,8 +41,26 @@ function Profile(props) {
           })
           setUserPosts(posts)
         })
-    } 
+    }
   }, [props.route.params.uid])
+
+  const onFollow = () => {
+    firebase.firestore()
+      .collection("following")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userFollowing")
+      .doc(props.route.params.uid)
+      .set({})
+  }
+
+  const onUnfollow = () => {
+    firebase.firestore()
+      .collection("following")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userFollowing")
+      .doc(props.route.params.uid)
+      .delete({})
+  }
 
   if (user === null) {
     return <View/>
@@ -55,6 +73,21 @@ function Profile(props) {
       <View style={styles.containerInfo}>
         <Text>name: {user.name}</Text>
         <Text>{user.email}</Text>
+        {props.route.params.uid !== firebase.auth().currentUser.uid
+          ? (<View>
+              {following? (
+                <Button
+                 title="following"
+                 onPress={()=> onUnfollow()}
+                />
+              ) : (
+                <Button
+                 title="follow"
+                 onPress={()=> onFollow()}
+                />
+              )}
+            </View>)
+          : null}
       </View>
       <View style={styles.containerGallery}>
         <FlatList
