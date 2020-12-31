@@ -41,8 +41,8 @@ function Profile(props) {
           })
           setUserPosts(posts)
         })
-    }
-  })
+    } 
+  }, [props.route.params.uid])
 
   if (user === null) {
     return <View/>
