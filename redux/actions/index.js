@@ -1,5 +1,7 @@
 import firebase from 'firebase'
-import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE } from '../constants/index'
+import { USER_STATE_CHANGE,
+  USER_POSTS_STATE_CHANGE,
+  USER_FOLLOWING_STATE_CHANGE } from '../constants/index'
 
 // get from firestore
 export function fetchUser() {
@@ -41,6 +43,26 @@ export function fetchUserPosts() {
         disptach({
           type: USER_POSTS_STATE_CHANGE,
           posts: posts
+        })
+      })
+  })
+}
+
+export function fetchUserFollowing() {
+  return((disptach) => {
+    firebase.firestore()
+      .collection("following")
+      .doc(firebase.auth().currentUser.uid)
+      .collection("userFollowing")
+      .onSnapshot((snapshot) => {
+        let following = snapshot.docs.map(doc => {
+          const id = doc.id
+          return id
+        })
+        console.log(following)  //posts is an array
+        disptach({
+          type: USER_FOLLOWING_STATE_CHANGE,
+          following: following
         })
       })
   })
