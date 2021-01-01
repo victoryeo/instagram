@@ -117,6 +117,7 @@ export function fetchUsersFollowingPosts(uid) {
       .get()
        .then((snapshot) => {
         //get uid of the returned data
+        //this path is retrieved from the console log of snapshot
         const uid = snapshot.kf.query.path.segments[1]
         //const uid = 1
         console.log({snapshot, uid})
