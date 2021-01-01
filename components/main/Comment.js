@@ -28,12 +28,22 @@ export default function Comment(props) {
           })
           setComments(comments)
         })
-      setPostId(props.route.params.postId)  
+      setPostId(props.route.params.postId)
     }
   }, [props.route.params.postId])
 
   return(
     <View>
+      <FlatList
+        numColumns={1}
+        horizontal={false}
+        data={comments}
+        renderItem={({item}) => (
+          <View>
+            <Text>{item.text}</Text>
+          </View>
+        )}
+      />
     </View>
   )
 }
