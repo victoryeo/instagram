@@ -45,7 +45,10 @@ function Feed(props) {
               />
               <Text
                 onPress ={()=>
-                  props.navigation.navigate('Comment', {postId: item.id})
+                  props.navigation.navigate('Comment', {
+                    postId: item.id,
+                    uid: item.user.uid
+                  })
                 }>
                 View comments...</Text>
             </View>
