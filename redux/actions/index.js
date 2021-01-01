@@ -59,11 +59,22 @@ export function fetchUserFollowing() {
           const id = doc.id
           return id
         })
-        console.log(following)  //posts is an array
+        console.log(following)  //following is an array
         disptach({
           type: USER_FOLLOWING_STATE_CHANGE,
           following: following
         })
       })
+  })
+}
+
+export function fetchUsersData(uid) {
+  return((dispatch, getState)=> {
+    const found = getState().usersState.users.some(el=>el.uid===uid)
+
+    if (!found) {
+      //user not exist within the array
+    }
+
   })
 }
