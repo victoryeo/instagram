@@ -3,7 +3,17 @@ import { USER_STATE_CHANGE,
   USER_POSTS_STATE_CHANGE,
   USER_FOLLOWING_STATE_CHANGE,
   USERS_DATA_STATE_CHANGE,
-  USERS_POSTS_STATE_CHANGE } from '../constants/index'
+  USERS_POSTS_STATE_CHANGE,
+  CLEAR_DATA } from '../constants/index'
+
+// clear data from redux store
+export function clearData() {
+  return ((dispatch) => {
+    dispatch({
+      type: CLEAR_DATA,
+    })
+  })
+}
 
 // get from firestore
 export function fetchUser() {
