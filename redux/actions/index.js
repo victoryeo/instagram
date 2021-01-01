@@ -134,6 +134,7 @@ export function fetchUsersFollowingPosts(uid) {
           posts: posts,
           uid: uid
         })
+        console.log(getState)
       })
   })
 }
