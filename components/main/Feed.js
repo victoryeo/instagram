@@ -21,7 +21,7 @@ function Feed(props) {
       }
 
       //order the posts according to creation time
-      posts.sort(function(x,y) {
+      posts.sort((x,y) => {
         return x.creation - y.creation
       })
 
