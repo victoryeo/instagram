@@ -1,7 +1,8 @@
 import firebase from 'firebase'
 import { USER_STATE_CHANGE,
   USER_POSTS_STATE_CHANGE,
-  USER_FOLLOWING_STATE_CHANGE } from '../constants/index'
+  USER_FOLLOWING_STATE_CHANGE,
+  USERS_DATA_STATE_CHANGE } from '../constants/index'
 
 // get from firestore
 export function fetchUser() {
@@ -74,6 +75,25 @@ export function fetchUsersData(uid) {
 
     if (!found) {
       //user not exist within the array
+      return((disptach) => {
+        firebase.firestore()
+          .collection("users")
+          .doc(uid)
+          .get()
+          .then((snapshot) => {
+            if (snapshot.exists) {
+              let user = snapshot.data()
+              user.uid = snapshot.id
+              disptach({
+                type: USERS_DATA_STATE_CHANGE,
+                user: user
+              })
+            }
+            else {
+              console.log('not exist')
+            }
+          })
+      })
     }
 
   })
