@@ -43,6 +43,11 @@ function Feed(props) {
                 style={styles.image}
                 source={{uri: item.snapshot}}
               />
+              <Text
+                onPress ={()=>
+                  props.navigation.navigate('Comment', {postId: item.id})
+                }>
+                View comments...</Text>
             </View>
           )}
         />
