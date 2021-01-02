@@ -7,6 +7,7 @@ export default function Search(props) {
   const [users, setUsers] = useState([])
 
   const fetchUser =  (search) => {
+    console.log("called fetchUser")
     firebase.firestore()
     .collection('users')
     .where('name', '>=', search)
@@ -25,7 +26,7 @@ export default function Search(props) {
   return (
     <View>
       <Text>Search</Text>
-      <TextInput placeholder="type..." onChangeText={(search) => {fetchUser(search)}} />
+      <TextInput placeholder="type..." onChangeText={(search) => (fetchUser(search))} />
       <FlatList
         numColumns={1}
         horizontal={false}
