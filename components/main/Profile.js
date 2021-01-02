@@ -11,6 +11,8 @@ function Profile(props) {
   useEffect(()=> {
     const {currentUser, posts} = props
     console.log({currentUser, posts})
+    //props.route.params.uid comes from the params passed from
+    //props.navigation.navigate("Profile", {uid: item.id}) in Search.js
     if (props.route.params.uid === firebase.auth().currentUser.uid) {
       setUser(currentUser)
       setUserPosts(posts)
