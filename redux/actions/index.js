@@ -78,13 +78,13 @@ export function fetchUserFollowing() {
           following: following
         })
         for (let i = 0; i < following.length; i++) {
-          dispatch(fetchUsersData(following[i]))
+          dispatch(fetchUsersData(following[i]), true)
         }
       })
   })
 }
 
-export function fetchUsersData(uid) {
+export function fetchUsersData(uid, getPosts) {
   return((dispatch, getState)=> {
     const found = getState().usersState.users.some(el=>el.uid===uid)
     console.log(found)
@@ -104,14 +104,15 @@ export function fetchUsersData(uid) {
                 type: USERS_DATA_STATE_CHANGE,
                 user: user
               })
-              let param_uid = user.uid
-              console.log(param_uid)
-              dispatch(fetchUsersFollowingPosts(param_uid))
             }
             else {
               console.log('not exist')
             }
           })
+          if (getPosts) {
+            console.log(uid)
+            dispatch(fetchUsersFollowingPosts(uid))
+          }
     }
   })
 }
