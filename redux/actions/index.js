@@ -50,7 +50,8 @@ export function fetchUserPosts() {
           const id = doc.id
           return{id, ...data}
         })
-        console.log("VIC")
+        console.log("USER_POSTS_STATE_CHANGE")
+        console.log(firebase.auth().currentUser.uid)
         console.log(posts)  //posts is an array
         dispatch({
           type: USER_POSTS_STATE_CHANGE,

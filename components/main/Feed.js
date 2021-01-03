@@ -8,6 +8,9 @@ function Feed(props) {
   const [posts, setPosts] = useState([])
 
   useEffect(()=> {
+    console.log("Feed useEffect")
+    console.log(props.usersFollowingLoaded)
+    console.log(props.following.length)
     let posts = []
     if (props.usersFollowingLoaded == props.following.length) {
       for (let i = 0; i < props.following.length; i++) {
@@ -32,6 +35,7 @@ function Feed(props) {
   return (
     <View style={styles.containerView}>
       <View style={styles.containerGallery}>
+        <Text>User Feed</Text>
         <FlatList
           numColumns={1}
           horizontal={false}
