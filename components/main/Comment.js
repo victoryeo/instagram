@@ -3,12 +3,32 @@ import {View, Text, FlatList, Button, TextInput} from 'react-native'
 import firebase from 'firebase'
 require('firebase/firestore')
 
-export default function Comment(props) {
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {fetchUsersData} from '../../redux/actions/index'
+
+function Comment(props) {
   const [comments, setComments] = useState([])
   const [postId, setPostId] = useState("")
   const [text, setText] = useState("")
 
   useEffect(()=> {
+    function matchUserToComment(comments) {
+      for (let i = 0 ; i < comments.length; i++) {
+        if (comments[i].hasOwnProperty('user')){
+          //comments already has user id
+          continue;
+        }
+        //find user that match the comments' creator
+        const user = props.users.find(x => x.uid === comments[i].creator)
+        if (user == undefined) {
+          fetchUsersData(comments[i].creator, false)
+        } else {
+          comments[i].user = user
+        }
+      }
+      setComments(comments)
+    }
     if (props.route.params.postId !== postId) {
       //query to firestore
       firebase.firestore()
@@ -26,11 +46,16 @@ export default function Comment(props) {
             //if data has creator and text, then all of that will be returned
             return {id, ...data}
           })
-          setComments(comments)
+          matchUserToComment(comments)
         })
       setPostId(props.route.params.postId)
+    } else {
+      //if props.users is updated,
+      //then "if (props.route.params.postId !== postId)" will be false
+      //then the below will be called
+      matchUserToComment(comments)
     }
-  }, [props.route.params.postId])
+  }, [props.route.params.postId, props.users])
 
   const onCommentSend = () => {
     console.log('called onCommentSend')
@@ -54,6 +79,9 @@ export default function Comment(props) {
         data={comments}
         renderItem={({item}) => (
           <View>
+            {item.user !== undefined
+              ?<Text>{item.user.name}</Text>
+              :null}
             <Text>{item.text}</Text>
           </View>
         )}
@@ -71,3 +99,11 @@ export default function Comment(props) {
     </View>
   )
 }
+
+const mapStateToProps = (store) => ({
+  users: store.usersState.users
+})
+const mapDispatchProps = (dispatch) => bindActionCreators
+  ({fetchUsersData}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchProps)(Comment)
