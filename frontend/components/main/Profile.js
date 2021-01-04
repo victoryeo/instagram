@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native'
-import { connect } from 'react-redux'
 import firebase from 'firebase'
 require('firebase/firestore')
+import { connect } from 'react-redux'
 
 function Profile(props) {
   const [userPosts, setUserPosts] = useState([])
   const [user, setUser] = useState(null)
   const [following, setFollowing] = useState(false)
+
   useEffect(()=> {
-    const {currentUser, posts} = props
-    console.log({currentUser, posts})
+    const { currentUser, posts } = props
     //props.route.params.uid comes from the params passed from
     //props.navigation.navigate("Profile", {uid: item.id}) in Search.js
     if (props.route.params.uid === firebase.auth().currentUser.uid) {
@@ -18,7 +18,8 @@ function Profile(props) {
       setUserPosts(posts)
     }
     else {
-      firebase.firestore().collection("users")
+      firebase.firestore()
+ 	.collection("users")
         .doc(props.route.params.uid)
         .get()
         .then((snapshot) => {
@@ -26,7 +27,7 @@ function Profile(props) {
             setUser(snapshot.data())
           }
           else {
-            console.log('not exist')
+            console.log('does not exist')
           }
         })
       firebase.firestore()
@@ -79,23 +80,21 @@ function Profile(props) {
     return <View/>
   }
 
-  const { currentUser, posts } = props
-  console.log({currentUser, posts})
   return (
     <View style={styles.containerView}>
       <View style={styles.containerInfo}>
-        <Text>name: {user.name}</Text>
+        <Text>{user.name}</Text>
         <Text>{user.email}</Text>
         {props.route.params.uid !== firebase.auth().currentUser.uid
           ? (<View>
               {following? (
                 <Button
-                 title="following"
+                 title="Following"
                  onPress={()=> onUnfollow()}
                 />
               ) : (
                 <Button
-                 title="follow"
+                 title="Follow"
                  onPress={()=> onFollow()}
                 />
               )}
@@ -110,12 +109,12 @@ function Profile(props) {
         <FlatList
           numColumns={3}
           horizontal={false}
-          data={posts}
+          data={userPosts}
           renderItem={({item}) => (
             <View style={styles.containerImage}>
               <Image
                 style={styles.image}
-                source={{uri: item.snapshot}}
+                source={{uri: item.downloadURL}}
               />
             </View>
           )}
@@ -132,13 +131,13 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   containerInfo: {
-    margin: 20,
+    margin: 20
   },
   containerGallery: {
-    flex: 2,
+    flex: 1
   },
   containerImage: {
-    flex: 1/3,
+    flex: 1 / 3
   },
   image: {
     flex: 1,
