@@ -4,6 +4,7 @@ import { USER_STATE_CHANGE,
   USER_FOLLOWING_STATE_CHANGE,
   USERS_DATA_STATE_CHANGE,
   USERS_POSTS_STATE_CHANGE,
+  USERS_LIKES_STATE_CHANGE,
   CLEAR_DATA } from '../constants/index'
 
 // clear data from redux store
@@ -142,12 +143,47 @@ export function fetchUsersFollowingPosts(uid) {
           return{id, ...data, user}
         })
         console.log(posts)  //posts is an array
+
+        for (let i = 0 ; i < posts.length; i++) {
+          dispatch(fetchUsersFollowingLikes(uid,posts[i].id))
+        }
         dispatch({
           type: USERS_POSTS_STATE_CHANGE,
           posts: posts,
           uid: uid
         })
         console.log(getState)
+      })
+  })
+}
+
+export function fetchUsersFollowingLikes(uid, postId) {
+  return((dispatch, getState) => {
+    console.log(uid)
+    firebase.firestore()
+      .collection("posts")
+      .doc(uid)
+      .collection("userPosts")
+      .doc(postId)
+      .collection("likes")
+      .doc(firebase.auth().currentUser.uid)
+      //onSnapshot will be called any time the value in collection doc changes
+      .onSnapshot((snapshot) => {
+        //get uid of the returned data
+        //this path is retrieved from the console log of snapshot
+        const postId = snapshot.kf.query.path.segments[3]
+        //const uid = 1
+        console.log({snapshot, postId})
+        let currentUserLike = false
+        if (snapshot.exists) {
+          currentUserLike = true
+        }
+
+        dispatch({
+          type: USERS_LIKES_STATE_CHANGE,
+          postId,
+          currentUserLike
+        })
       })
   })
 }
