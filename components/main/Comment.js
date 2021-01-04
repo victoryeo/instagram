@@ -22,7 +22,7 @@ function Comment(props) {
         //find user that match the comments' creator
         const user = props.users.find(x => x.uid === comments[i].creator)
         if (user == undefined) {
-          fetchUsersData(comments[i].creator, false)
+          props.fetchUsersData(comments[i].creator, false)
         } else {
           comments[i].user = user
         }
