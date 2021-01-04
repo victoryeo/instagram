@@ -13,9 +13,11 @@ export default function Save(props) {
     //upload image to firestore database
     firebase.firestore()
     .collection('posts').doc(firebase.auth().currentUser.uid)
-    .collection('userPosts').add({
+    .collection('userPosts')
+    .add({
       snapshot,
       caption,
+      likesCount: 0,
       creation: firebase.firestore.FieldValue.serverTimestamp()
     })
     .then(function() {
