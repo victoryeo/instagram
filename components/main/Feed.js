@@ -11,26 +11,19 @@ function Feed(props) {
     console.log("Feed useEffect")
     console.log(props.usersFollowingLoaded)
     console.log(props.following.length)
-    let posts = []
-    if (props.usersFollowingLoaded == props.following.length) {
-      for (let i = 0; i < props.following.length; i++) {
-        const user = props.users.find(param=>{
-          console.log(param.uid)
-          param.uid===props.following[i]
-        })
-        if (user != undefined) {
-          posts = [...posts, ...user.posts]
-        }
-      }
+    if (props.usersFollowingLoaded == props.following.length  &&
+      props.following.length !== 0) {
 
       //order the posts according to creation time
-      posts.sort((x,y) => {
+      props.feed.sort((x,y) => {
         return x.creation - y.creation
       })
 
-      setPosts(posts)
+      setPosts(props.feed)
     }
-  }, [props.usersFollowingLoaded])
+    console.log(posts)
+
+  }, [props.usersFollowingLoaded, props.feed])
 
   return (
     <View style={styles.containerView}>
@@ -87,7 +80,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
   following: store.userState.following,
-  users: store.usersState.users,
+  feed: store.usersState.feed,
   usersFollowingLoaded: store.usersState.usersFollowingLoaded,
 })
 
