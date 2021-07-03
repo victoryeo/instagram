@@ -1,0 +1,3 @@
+This is a simple app that tries to mimic Instagram. It let users upload picture, click like button, etc.
+The frontend is written using react native.
+The backend is written using nodeJS.
